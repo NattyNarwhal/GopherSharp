@@ -11,10 +11,39 @@ namespace GopherSharp {
 	// object needed - Gopher wouldn't need a complex object.
 	public static class GopherRequester {
 		// TODO: Querying versions of functions below
-		// TODO: bytestream version of the Request function
 		// TODO: Maybe split the item list parsing into a seperate func
-		public static string RequestRaw(string server, string resource, int port = 70) {
+		
+		// nicked this off SO, terribly ugly but it should work
+		private static byte[] ReadAllBytes(this Stream s)
+		{
+			const int bufferSize = 4096;
+			using (var ms = new MemoryStream())
+			{
+		        byte[] buffer = new byte[bufferSize];
+		        int count;
+		        while ((count = s.Read(buffer, 0, buffer.Length)) != 0){
+		            ms.Write(buffer, 0, count);
+				}
+		        return ms.ToArray();
+		    }
+		}
+
+		public static byte[] RequestRaw(string server, string resource, int port = 70) {
 			TcpClient tc = new TcpClient(server, port);
+			using (Stream s = tc.GetStream()) {
+				StreamWriter sw = new StreamWriter(s);
+				sw.AutoFlush = true;
+				
+				sw.WriteLine(resource);
+				
+				return s.ReadAllBytes();
+				
+				//return new byte[0];
+			}
+		}
+		
+		public static string RequestString(string server, string resource, int port = 70) {
+			TcpClient tc = new TcpClient(server, port); 
 			using (Stream s = tc.GetStream()) {
 				StreamReader sr = new StreamReader(s);
 				StreamWriter sw = new StreamWriter(s);
@@ -26,7 +55,7 @@ namespace GopherSharp {
 			}
 		}
 		
-		public static List<GopherItem> Request(string server, string resource, int port = 70) {
+		public static List<GopherItem> RequestMenu(string server, string resource, int port = 70) {
 			TcpClient tc = new TcpClient(server, port);
 			string buffer = String.Empty;
 			using (Stream s = tc.GetStream()) {

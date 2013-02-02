@@ -12,13 +12,17 @@ Check out the [gopher RFC](https://tools.ietf.org/html/rfc1436) as well, for bes
 
 To access a menu, use
 
-    List<GopherItem> items = GopherRequester.Request(hostnameToServer, selectorToMenu); // port is last parameter and option, default is 70
+    List<GopherItem> items = GopherRequester.RequestMenu(hostnameToServer, selectorToMenu); // port is last parameter and option, default is 70
 
-To access a raw file or menu as a string, use
+To access a text file or menu as a string, use
 
-    string item = GopherRequester.Request(hostnameToServer, selectorToMenu); // port is last parameter and option, default is 70
+    string item = GopherRequester.RequestText(hostnameToServer, selectorToMenu); // port is last parameter and option, default is 70
 
-Raw bytestream output and query input is not supported.
+To access a raw file as a byte array, use
+
+    byte[] item = GopherRequester.RequestRaw(hostnameToServer, selectorToMenu); // port is last parameter and option, default is 70
+
+Query input is not supported.
 
 ### GopherItem
 
