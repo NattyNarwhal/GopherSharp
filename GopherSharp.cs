@@ -120,5 +120,10 @@ namespace GopherSharp {
 			Hostname = items[2];
 			Port = Convert.ToInt32(items[3]);
 		}
+		
+		public override string ToString() {
+			return ItemType.ToString() + DisplayString + "\t" + Selector
+				+ "\t" + Hostname + "\t" + Port.ToString();
+		}
 	}
 }
