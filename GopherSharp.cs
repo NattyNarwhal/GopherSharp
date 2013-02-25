@@ -67,15 +67,7 @@ namespace GopherSharp {
 				buffer = sr.ReadToEnd();
 			}
 			
-			string[] bufferItems = Regex.Split(buffer, "\r\n");
-			List<GopherItem> items = new List<GopherItem>();
-			
-			foreach (string s in bufferItems) {
-				if (s == ".")
-					break;
-				items.Add(new GopherItem(s));
-			}
-			return items;
+			return GopherItem.MakeMenu(Regex.Split(buffer, "\r\n"));
 		}
 	}
 	
@@ -87,6 +79,7 @@ namespace GopherSharp {
 		public string DisplayString {
 			get; set;
 		}
+		
 		public string Selector {
 			get; set;
 		}
@@ -124,6 +117,30 @@ namespace GopherSharp {
 		public override string ToString() {
 			return ItemType.ToString() + DisplayString + "\t" + Selector
 				+ "\t" + Hostname + "\t" + Port.ToString();
+		}
+		
+		// Menu creation functions
+		public static List<GopherItem> MakeFromMenu(string menu) {
+			string[] bufferItems = Regex.Split(menu, "\r\n");
+			List<GopherItem> items = new List<GopherItem>();
+			
+			foreach (string s in bufferItems) {
+				if (s == ".")
+					break;
+				items.Add(new GopherItem(s));
+			}
+			return items;
+		}
+		
+		public static List<GopherItem> MakeFromMenu(string[] menu) {
+			List<GopherItem> items = new List<GopherItem>();
+			
+			foreach (string s in menu) {
+				if (s == ".")
+					break;
+				items.Add(new GopherItem(s));
+			}
+			return items;
 		}
 	}
 }
