@@ -67,7 +67,7 @@ namespace GopherSharp {
 				buffer = sr.ReadToEnd();
 			}
 			
-			return GopherItem.MakeMenu(Regex.Split(buffer, "\r\n"));
+			return GopherItem.MakeFromMenu(Regex.Split(buffer, "\r\n"));
 		}
 	}
 	
