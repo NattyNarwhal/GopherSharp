@@ -10,7 +10,6 @@ namespace GopherSharp {
 	// This makes it easier to quickly fetch, as there is no client
 	// object needed - Gopher wouldn't need a complex object.
 	public static class GopherRequester {
-		// TODO: Querying versions of functions below
 		// TODO: Maybe split the item list parsing into a seperate func
 		
 		// nicked this off SO, terribly ugly but it should work
@@ -27,7 +26,7 @@ namespace GopherSharp {
 		        return ms.ToArray();
 		    }
 		}
-
+		
 		public static byte[] RequestRaw(string server, string resource, int port = 70) {
 			TcpClient tc = new TcpClient(server, port);
 			using (Stream s = tc.GetStream()) {
@@ -43,7 +42,7 @@ namespace GopherSharp {
 		}
 		
 		public static string RequestString(string server, string resource, int port = 70) {
-			TcpClient tc = new TcpClient(server, port); 
+			TcpClient tc = new TcpClient(server, port);
 			using (Stream s = tc.GetStream()) {
 				StreamReader sr = new StreamReader(s);
 				StreamWriter sw = new StreamWriter(s);
@@ -56,18 +55,17 @@ namespace GopherSharp {
 		}
 		
 		public static List<GopherItem> RequestMenu(string server, string resource, int port = 70) {
+			// this doesn't work so well for searches: see ("gopher.floodgap.com", "/v2/vs?sq=test")
 			TcpClient tc = new TcpClient(server, port);
-			string buffer = String.Empty;
 			using (Stream s = tc.GetStream()) {
 				StreamReader sr = new StreamReader(s);
 				StreamWriter sw = new StreamWriter(s);
 				sw.AutoFlush = true;
 				
 				sw.WriteLine(resource);
-				buffer = sr.ReadToEnd();
+				
+				return GopherItem.MakeFromMenu(Regex.Split(sr.ReadToEnd(), "\r\n"));
 			}
-			
-			return GopherItem.MakeFromMenu(Regex.Split(buffer, "\r\n"));
 		}
 	}
 	
