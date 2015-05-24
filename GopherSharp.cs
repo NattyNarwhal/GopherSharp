@@ -64,7 +64,7 @@ namespace GopherSharp {
 				
 				sw.WriteLine(resource);
 				
-				return GopherItem.MakeFromMenu(Regex.Split(sr.ReadToEnd(), "\r\n"));
+				return GopherItem.MakeFromMenu(Regex.Split(sr.ReadToEnd(), "\r?\n"));
 			}
 		}
 	}
@@ -119,7 +119,7 @@ namespace GopherSharp {
 		
 		// Menu creation functions
 		public static List<GopherItem> MakeFromMenu(string menu) {
-			string[] bufferItems = Regex.Split(menu, "\r\n");
+			string[] bufferItems = Regex.Split(menu, "\r?\n");
 			List<GopherItem> items = new List<GopherItem>();
 			
 			foreach (string s in bufferItems) {
