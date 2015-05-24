@@ -10,8 +10,6 @@ namespace GopherSharp {
 	// This makes it easier to quickly fetch, as there is no client
 	// object needed - Gopher wouldn't need a complex object.
 	public static class GopherRequester {
-		// TODO: Maybe split the item list parsing into a seperate func
-		
 		// nicked this off SO, terribly ugly but it should work
 		private static byte[] ReadAllBytes(this Stream s)
 		{
@@ -55,7 +53,6 @@ namespace GopherSharp {
 		}
 		
 		public static List<GopherItem> RequestMenu(string server, string resource, int port = 70) {
-			// this doesn't work so well for searches: see ("gopher.floodgap.com", "/v2/vs?sq=test")
 			TcpClient tc = new TcpClient(server, port);
 			using (Stream s = tc.GetStream()) {
 				StreamReader sr = new StreamReader(s);

@@ -22,8 +22,6 @@ To access a raw file as a byte array, use
 
     byte[] item = GopherRequester.RequestRaw(hostnameToServer, selectorToMenu); // port is last parameter and option, default is 70
 
-Query input is not supported.
-
 ### GopherItem
 
 A GopherItem abstracts a menu item on a gopher server. Its items include:
