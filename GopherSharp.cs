@@ -127,6 +127,8 @@ namespace GopherSharp {
 			List<GopherItem> items = new List<GopherItem>();
 			
 			foreach (string s in menu) {
+				if (String.IsNullOrWhitespace(s))
+					continue; //handle slightly broken sites
 				if (s == ".")
 					break;
 				items.Add(new GopherItem(s));
