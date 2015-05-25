@@ -16,13 +16,13 @@ namespace GopherSharp {
 			const int bufferSize = 4096;
 			using (var ms = new MemoryStream())
 			{
-		        byte[] buffer = new byte[bufferSize];
-		        int count;
-		        while ((count = s.Read(buffer, 0, buffer.Length)) != 0){
-		            ms.Write(buffer, 0, count);
+				byte[] buffer = new byte[bufferSize];
+				int count;
+				while ((count = s.Read(buffer, 0, buffer.Length)) != 0){
+					ms.Write(buffer, 0, count);
 				}
-		        return ms.ToArray();
-		    }
+				return ms.ToArray();
+			}
 		}
 		
 		public static byte[] RequestRaw(string server, string resource, int port = 70) {
@@ -34,8 +34,6 @@ namespace GopherSharp {
 				sw.WriteLine(resource);
 				
 				return s.ReadAllBytes();
-				
-				//return new byte[0];
 			}
 		}
 		
@@ -52,7 +50,7 @@ namespace GopherSharp {
 			}
 		}
 		
-		public static List<GopherItem> RequestMenu(string server, string resource, int port = 70) {
+		public static IEnumerable<GopherItem> RequestMenu(string server, string resource, int port = 70) {
 			TcpClient tc = new TcpClient(server, port);
 			using (Stream s = tc.GetStream()) {
 				StreamReader sr = new StreamReader(s);
@@ -115,22 +113,19 @@ namespace GopherSharp {
 		}
 		
 		// Menu creation functions
-		public static List<GopherItem> MakeFromMenu(string menu) {
+		public static IEnumerable<GopherItem> MakeFromMenu(string menu) {
 			string[] bufferItems = Regex.Split(menu, "\r?\n");
 			return MakeFromMenu(bufferItems);
 		}
 		
-		public static List<GopherItem> MakeFromMenu(string[] menu) {
-			List<GopherItem> items = new List<GopherItem>();
-			
+		public static IEnumerable<GopherItem> MakeFromMenu(string[] menu) {
 			foreach (string s in menu) {
-				if (String.IsNullOrWhitespace(s))
+				if (String.IsNullOrWhiteSpace(s))
 					continue; //handle slightly broken sites
 				if (s == ".")
 					break;
-				items.Add(new GopherItem(s));
+				yield return new GopherItem(s);
 			}
-			return items;
 		}
 	}
 }
